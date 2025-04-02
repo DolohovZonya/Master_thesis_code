@@ -4,7 +4,7 @@
 
 \# The code below has been performed for GBR sampleset
 
-### \# Generate genotype matrix
+### Generate genotype matrix
 
 variants <- read.table("one\_consequence.tsv", header=TRUE, sep="\\t")
 
@@ -18,25 +18,25 @@ read 91 samples #read samples
 
 result <- SVDFunctions::scanBinaryFile(“new\_bin\_bin”, “new\_bin\_meta”, samples = samples, vars = vars, DP = 0, GQ = 0)
 
-### \# Generate merged file of annotaion and genotype distribution of samples
+### Generate merged file of annotaion and genotype distribution of samples
 
 variants <- as.data.frame(cbind(vars, variants))
 
 master\_table <- inner\_join(result, variants)
 
-161558 rows
+\# 161558 rows
 
-### \# Calculate the internal allele frequency
+### Calculate the internal allele frequency
 
 master\_table$internal\_af <- (master\_table$het + master\_table$hom\_alt\*2) / 182 (n\_samples\*2)
 
-### \# Calculate the variance between gnomAD and internal frequencies
+Calculate the variance between gnomAD and internal frequencies
 
 master\_table$var <- master\_table$internal\_af - master\_table$freq
 
-### \# Allele frequency filtering
+### Allele frequency filtering
 
-#### \# Firstly, we can apply basic filters, dividing our data by variant annotation
+\# Firstly, we can apply basic filters, dividing our data by variant annotation
 
 \# synonymous variants:
 
@@ -46,7 +46,7 @@ master\_syns <- master\_table %>% filter(reason == “synonymous\_variant”)
 
 master\_mis\_ptv <- master\_table %>% filter(reason == "missense\_variant" | reason == "frameshift\_variant" | reason == "stop\_gained" | reason == "stop\_lost" | reason == "splice\_acceptor\_variant" | reason == "splice\_donor\_variant" | reason == "start\_lost")
 
-#### \# Then, we need to perform filtering and get variants we actually want to work with. It will include:
+Then, we need to perform filtering and get variants we actually want to work with. It will include:
 
 1.  calculator variance between gnomAD allele frequency and internal allele frequency
 2.  filtering by |variance| <= 2\*std of this variance
@@ -63,9 +63,9 @@ master\_syns\_1p\_filt <- master\_syns %>% filter((freq <= 0.01 & freq !=0) & in
 
 master\_mis\_ptv\_1p\_filt <- master\_mis\_ptv %>% filter((freq <= 0.01 & freq !=0) & internal\_af <= 0.01 & (var <= 2\*sd(master\_table$var) & var >= -2\*sd(master\_table$var))
 
-### \# Platform parameters: DP=0, GQ=0, gnomAD\_MAF = 0.01, отдельно syn, отдельно mis+ptv
+\№ Platform parameters: DP=0, GQ=0, gnomAD\_MAF = 0.01, отдельно syn, отдельно mis+ptv
 
-### \# Group variants by gene
+### Group variants by gene
 
 \# synonymous variants:
 
@@ -103,7 +103,7 @@ master\_1p\_mis\_ptv\_gr <- master\_mis\_ptv\_1p\_filt %>%               
 
   )
 
-### \# Import files from platform
+### Import files from platform
 
 \# synonymous variants:
 
@@ -113,7 +113,7 @@ syns\_controls\_1p <- read.table("syns\_genes\_controls\_1p.tsv", header=TRUE, s
 
 mis\_ptv\_controls\_1p <- read.table("mis\_ptv\_genes\_controls\_1p.tsv", header=TRUE, sep="\\t")
 
-### \# Merge cases matrix and controls matrix
+### Merge cases matrix and controls matrix
 
 \# Cases samples get the flag ‘\_test’
 
@@ -131,7 +131,7 @@ merged\_data\_mis\_ptv\_1p <- merge(master\_1p\_mis\_ptv\_gr, mis\_ptv\_controls
 
 merged\_data\_mis\_ptv\_1p\[is.na(merged\_data\_mis\_ptv\_1p)\] = 0
 
-### \# Allele based fisher test
+### Allele based fisher test
 
 \# synonymous variants:
 
@@ -199,7 +199,7 @@ merged\_data\_mis\_ptv\_fisher <- merged\_data\_mis\_ptv\_1p %>%
 
   )
 
-### \# Calculate p value distributions for visualization
+### Calculate p value distributions for visualization
 
 \# synonymous variants:
 
@@ -221,7 +221,7 @@ merged\_data\_mis\_ptv\_fisher$neg\_log\_p <- -log10(merged\_data\_mis\_ptv\_fis
 
 merged\_data\_mis\_ptv\_fisher$theoretical <- -log10((rank(merged\_data\_mis\_ptv\_fisher$fisher\_p\_value) - 0.5) / length(merged\_data\_mis\_ptv\_fisher$fisher\_p\_value))
 
-### \# Save the result table
+### Save the result table
 
 \# synonymous variants:
 
@@ -231,7 +231,7 @@ write.table(merged\_data\_syns\_fisher, "for\_qpplot\_carriers\_syns\_1p\_new\_p
 
 write.table(merged\_data\_mis\_ptv\_fisher, "for\_qpplot\_carriers\_mis\_ptv\_1p\_new\_p\_value.tsv", sep="\\t")
 
-### \# Genotype based Fisher test
+### Genotype based Fisher test
 
 \# synonymous variants:
 
@@ -329,7 +329,7 @@ results\_mis\_ptv\_genes\_fisher <- data.frame(
 
   odds\_ratio = odds\_ratios\_mis\_ptv)
 
-### \# Calculate p value distributions for visualization
+### Calculate p value distributions for visualization
 
 \# synonymous variants:
 
@@ -351,7 +351,7 @@ results\_mis\_ptv\_genes\_fisher$neg\_log\_p <- -log10(results\_mis\_ptv\_genes\
 
 results\_mis\_ptv\_genes\_fisher$theoretical <- -log10((rank(results\_mis\_ptv\_genes\_fisher$fisher\_p\_value) - 0.5) / length(results\_mis\_ptv\_genes\_fisher$fisher\_p\_value))
 
-### \# Save the result table
+### Save the result table
 
 \# synonymous variants:
 
