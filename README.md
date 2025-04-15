@@ -1,1 +1,2 @@
 This is a pipeline for genotype matrix preprocessing and gene association testing of GBR sampleset with control cohort of Europeans from the DNASCoRe (https://dnascore.net/) platform.
+The steps are starting with scanning a binary file by a certain subpopulation, after that filtering steps are performed, variants are merged by gene and Fisher' excact test is being made against control cohort output from the platform.
