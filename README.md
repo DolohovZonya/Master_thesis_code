@@ -3,7 +3,7 @@ This is a pipeline for genotype matrix preprocessing and gene association testin
 Follow the pipeline (the scheme is listed below)
 ## Prepare the data
    ![image](https://github.com/user-attachments/assets/aa11fb56-e0e5-44d7-8b14-ec523fbf892a)
-You should also make a binary file, you can do it with the SVDFunctions library (https://github.com/alexloboda/SVDFunctions) (an example of a binary file for GBR population can be found at this repo, named "new_bin_bin" and "new_bin_meta" for metadata).
+You should also make a binary file, you can do it with the SVDFunctions library (https://github.com/alexloboda/SVDFunctions) (an example of metadata for a binary file for GBR population can be found at this repo, named "new_bin_meta").
 ## .YAML file for the platform
 And you should make a .yml file of your samples of interest, you can just follow the tutorial on the plantofrm (ttps://dnascore.net/).
 # Files to work with using this code
