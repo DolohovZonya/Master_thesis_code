@@ -119,12 +119,12 @@ Use this parser:
 Modify to include allele frequency column if needed.
 
 # Generate binary file
-
+    samples <- scan("your_samples.txt", what=character())
     scanVCF(
       exomes_biallelic.vcf.gz,
       DP = 10L,
       GQ = 20L,
-      samples = "your_samples.txt",
+      samples = samples,
       bannedPositions = NULL,
       variants = NULL,
       returnGenotypeMatrix = TRUE,
@@ -496,3 +496,4 @@ resulted test
     best_alpha <- results$alpha[which.min(results$lambda)]
     cat("\nBest alpha:", best_alpha, "with lambda:", min(results$lambda), "\n")
     print(results)
+
